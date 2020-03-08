@@ -7,7 +7,6 @@ import static java.lang.Thread.sleep;
 public class Sender implements Runnable {
 
     private Medium medium;
-    private String message;
 
     public Sender(Medium medium) {
         this.medium = medium;
@@ -16,9 +15,8 @@ public class Sender implements Runnable {
     @Override
     public void run() {
         while (true) {
-            message = calculateMessage();
-            medium.send(message);
-            System.out.println("[SENDING]" + message);
+            medium.send(calculateMessage());
+            System.out.println("[SENDING]");
         }
     }
 

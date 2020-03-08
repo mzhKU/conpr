@@ -2,25 +2,28 @@ package other.Transmission;
 
 public class Medium {
 
-    private String oldValue;
-    private String newValue;
+    private String value;
+    private boolean notReceived;
 
-    public synchronized void send(String newValue) {
-        this.oldValue = this.newValue;
+    public Medium() { this.notReceived = true; this.value = ""; }
+
+    public synchronized void send(String value) {
+        this.value       = value;
+        this.notReceived = false;
         notifyAll();
-        this.newValue = newValue;
     }
 
     public synchronized String receive() {
-        while (notNew()) {
+        while (didNotReceiveNewMessage()) {
             try {
                 wait();
             } catch (InterruptedException e) { }
         }
-        return this.newValue;
+        this.notReceived = true;
+        return this.value;
     }
 
-    private boolean notNew() {
-        return this.oldValue == this.newValue;
+    private boolean didNotReceiveNewMessage() {
+        return this.notReceived;
     }
 }
