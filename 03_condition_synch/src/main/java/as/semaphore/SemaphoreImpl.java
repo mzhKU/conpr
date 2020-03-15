@@ -34,5 +34,6 @@ public final class SemaphoreImpl implements Semaphore {
     @Override
     public synchronized void release() {
         this.value++;
+        stack.pop().start();
     }
 }
