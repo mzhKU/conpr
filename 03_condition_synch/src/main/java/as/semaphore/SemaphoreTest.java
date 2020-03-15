@@ -9,12 +9,12 @@ public class SemaphoreTest {
 
     public static void main(String[] args) throws InterruptedException {
         onlyOneInside();
-        secondComesAfterReleaseOfFirst();
-        twoAtTheSameTime();
-        badNotifier();
-        badInterruptor();
-        doubleAcquire();
-        fairness();
+        // secondComesAfterReleaseOfFirst();
+        // twoAtTheSameTime();
+        // badNotifier();
+        // badInterruptor();
+        // doubleAcquire();
+        // fairness();
     }
 
     static Semaphore newSemaphore(int value) {
