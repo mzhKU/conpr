@@ -17,6 +17,9 @@ public class SemaphoreTest {
         // fairness();
     }
 
+    // static Semaphore newSemaphore(int value) {
+    //     return new SemaphoreImpl(value);
+    // }
     static Semaphore newSemaphore(int value) {
         return new SemaphoreImpl(value);
     }

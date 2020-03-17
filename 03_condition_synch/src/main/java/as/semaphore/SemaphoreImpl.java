@@ -16,24 +16,28 @@ public final class SemaphoreImpl implements Semaphore {
     }
 
     @Override
-    public int available() {
+    public synchronized int available() {
         return value;
     }
 
     @Override
     public synchronized void acquire() {
-        while (this.value <= 0) {
+        stack.push(Thread.currentThread());
+        while (this.value <= 0 || stack.get(0) != Thread.currentThread()) {
             try {
-                stack.push(Thread.currentThread());
                 Thread.currentThread().wait();
             } catch (InterruptedException e) { }
         }
+
+
+        stack.pop();
+        notifyAll();
         this.value--;
     }
 
     @Override
     public synchronized void release() {
         this.value++;
-        stack.pop().start();
+        notifyAll();
     }
 }

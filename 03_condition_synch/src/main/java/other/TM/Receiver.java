@@ -5,7 +5,6 @@ public class Receiver implements Runnable {
 
     private Medium medium;
 
-
     public Receiver(Medium medium) {
         this.medium = medium;
     }
