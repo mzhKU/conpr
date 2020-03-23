@@ -12,9 +12,6 @@ public class SynchronizedIntegerTester {
         System.out.println("Unsafe");
         si = new SynchronizedIntegerUnsafe();
         Thread t1 = new Thread(() -> {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) { }
             si.set(10);
         });
 
@@ -31,9 +28,6 @@ public class SynchronizedIntegerTester {
         System.out.println("Safe");
         si = new SynchronizedIntegerSafe();
         Thread t3 = new Thread(() -> {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) { }
             si.set(10);
         });
 

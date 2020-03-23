@@ -8,6 +8,9 @@ public class SynchronizedIntegerSafe implements SynchronizedInteger {
     }
 
     public synchronized void set(int v) {
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) { }
         this.value = v;
     }
 }

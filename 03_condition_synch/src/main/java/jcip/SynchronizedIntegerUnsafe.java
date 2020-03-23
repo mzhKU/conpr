@@ -8,6 +8,11 @@ public class SynchronizedIntegerUnsafe implements SynchronizedInteger {
     }
 
     public void set(int v) {
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         this.value = v;
     }
 }
