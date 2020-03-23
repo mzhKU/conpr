@@ -12,18 +12,23 @@ public class Interleaver {
      * <p>
      * (n*m)!/(m!^n) where n= #threads and m #atomic actions
      */
-    private static <A> List<List<A>> interleave(List<A> a, List<A> b) {
+    private static <T> List<List<T>> interleave(List<T> a, List<T> b) {
+
         if (b.size() == 0) return Collections.singletonList(a);
         if (a.size() == 0) return Collections.singletonList(b);
-        List<List<A>> res = new LinkedList<List<A>>();
-        List<A> left = new LinkedList<A>();
-        List<A> right = new LinkedList<A>(a);
-        A bHead = b.get(0);
-        List<A> bTail = new LinkedList<A>(b);
+
+        List<List<T>> res   = new LinkedList<List<T>>();
+        List<T>       left  = new LinkedList<T>();
+        List<T>       right = new LinkedList<T>(a);
+
+        T       bHead = b.get(0);
+        List<T> bTail = new LinkedList<T>(b);
+
         bTail.remove(0);
+
         do {
-            for (List<A> list : interleave(right, bTail)) {
-                LinkedList<A> interleaving = new LinkedList<A>(left);
+            for (List<T> list : interleave(right, bTail)) {
+                LinkedList<T> interleaving = new LinkedList<T>(left);
                 interleaving.add(bHead);
                 interleaving.addAll(list);
                 res.add(interleaving);
@@ -31,6 +36,8 @@ public class Interleaver {
             if (right.size() == 0) break;
             left.add(right.remove(0));
         } while (true);
+
+        // = Interleaving
         return res;
     }
 
@@ -45,6 +52,7 @@ public class Interleaver {
         List<List<String>> interleavings = interleave(p1, p2);
 
         System.out.println(interleavings.size() + " interleavings:\n"); // 24/4
+
         for (List<String> interleaving : interleavings) {
             System.out.println("x=0; y=0; a=0; b=0;");
             for (String statement : interleaving) {
@@ -53,6 +61,5 @@ public class Interleaver {
             System.out.println();
         }
     }
-
 }
 

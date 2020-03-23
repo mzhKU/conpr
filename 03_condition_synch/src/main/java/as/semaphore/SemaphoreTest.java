@@ -14,7 +14,7 @@ public class SemaphoreTest {
         // badNotifier();
         // badInterruptor();
         // doubleAcquire();
-        // fairness();
+        fairness();
     }
 
     // static Semaphore newSemaphore(int value) {

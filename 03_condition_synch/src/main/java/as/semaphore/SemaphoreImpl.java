@@ -25,13 +25,13 @@ public final class SemaphoreImpl implements Semaphore {
         stack.push(Thread.currentThread());
         while (this.value <= 0 || stack.get(0) != Thread.currentThread()) {
             try {
-                Thread.currentThread().wait();
+                wait();
             } catch (InterruptedException e) { }
         }
 
 
         stack.pop();
-        notifyAll();
+        // notifyAll();
         this.value--;
     }
 

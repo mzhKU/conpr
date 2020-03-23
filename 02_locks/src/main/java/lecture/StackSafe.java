@@ -4,7 +4,7 @@ import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 @ThreadSafe
-public class Stack {
+public class StackSafe {
     private final Object lock = new Object();
 
     // 'top' points to next FREE field, not the currently last item position.

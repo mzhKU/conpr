@@ -2,9 +2,12 @@ package worksheet;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 class LockProblem1 {
     private List<String> list = new LinkedList<String>();
+
+    private final AtomicLong count = new AtomicLong(0);
 
     private final Object lock = new Object();
     // Broken version.

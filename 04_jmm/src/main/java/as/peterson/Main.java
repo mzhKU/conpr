@@ -20,9 +20,11 @@ public class Main {
 
     private static void criticalSection() {
         pm.lock();
+        System.out.println(pm);
         v++;
         sleep(500);
-        System.out.println(">> " + v + " " + Thread.currentThread().getName()); // should always print 1
+        // Should always print 1
+        System.out.println(">> " + v + " " + Thread.currentThread().getName());
         sleep(500);
         v--;
         pm.unlock();

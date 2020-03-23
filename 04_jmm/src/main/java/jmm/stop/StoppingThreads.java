@@ -4,7 +4,7 @@ public class StoppingThreads {
 
     static class StoppableThread extends Thread {
         // 'volatile': local caching of a value is not allowed.
-        private boolean running = true;
+        private volatile boolean running = true;
 
         public void terminate() {
             running = false;
