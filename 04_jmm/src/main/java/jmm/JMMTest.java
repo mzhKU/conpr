@@ -42,10 +42,10 @@ public class JMMTest {
             t.x = 0; t.y = 0;
             Thread t1 = t.new T1();
             Thread t2 = t.new T2();
-            t1.start();
-            t2.start();
-            t1.join();
-            t2.join();
+
+            t1.start(); t2.start();
+            t1.join();  t2.join();
+
             String s = "(" + t.a + "," + t.b + ")";
             if (!set.contains(s)) {
                 set.add(s);

@@ -4,27 +4,40 @@ import bank.Account;
 import bank.InactiveException;
 import bank.OverdrawException;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 class ConprAccount implements Account {
-    private static int id = 0;
 
-    private Lock lock;
+    // Atomicity and visibility problems
+    // --> using AtomicInteger, 'id' will be globally unique.
+    // private static int id = 0;
+    private static final AtomicInteger id = new AtomicInteger(0);
 
-    private String number;
-    private String owner;
-    private double balance;
-    private boolean active = true;
+
+    private final String number;
+    private final String owner;
+
+    private final ReentrantLock lock;
+
+    // 'volatile': Guarantees writing to balance happens-before reading on balance
+    private volatile double balance;
+
+    private volatile boolean active = true;
 
     ConprAccount(String owner) {
         this.lock = new ReentrantLock();
         this.owner = owner;
-        this.number = "CONPR_ACC_" + id++;
+
+        // this.number = "CONPR_ACC_" + id++;
+        this.number = "CONPR_ACC_" + id.getAndIncrement();
     }
 
     @Override
     public double getBalance() {
+
+        // 'doubles': 64 bit reading is not atomic.
         return balance;
     }
 
@@ -43,7 +56,7 @@ class ConprAccount implements Account {
         return active;
     }
 
-    void passivate() {
+    synchronized void passivate() {
         active = false;
     }
 

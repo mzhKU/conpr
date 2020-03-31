@@ -18,7 +18,7 @@ import bank.InactiveException;
 import bank.OverdrawException;
 
 public class ConprBankDriver implements bank.BankDriver {
-    private ConprBank bank = null;
+    private volatile ConprBank bank = null;
 
     @Override
     public void connect(String[] args) {

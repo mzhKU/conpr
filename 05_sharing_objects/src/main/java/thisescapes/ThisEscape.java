@@ -14,6 +14,15 @@ public class ThisEscape {
         i = 42;
     }
 
+
+
+
+
+
+
+
+
+
     protected void doSomething() {
         System.out.println(i);
     }

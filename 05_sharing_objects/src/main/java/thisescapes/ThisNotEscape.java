@@ -8,6 +8,12 @@ public class ThisNotEscape {
         i = 42;
     }
 
+
+
+
+
+
+
     // Factory method.
     public static ThisNotEscape create(EventSource source) {
         final ThisNotEscape notEscape = new ThisNotEscape();

@@ -8,10 +8,10 @@ public class SemaphoreTest {
 
     public static void main(String[] args) throws InterruptedException {
         onlyOneInside();
-        // secondComesAfterReleaseOfFirst();
-        // twoAtTheSameTime();
-        // badNotifier();
-        // badInterruptor();
+        secondComesAfterReleaseOfFirst();
+        twoAtTheSameTime();
+        badNotifier();
+        badInterruptor();
     }
 
     static void onlyOneInside() throws InterruptedException {

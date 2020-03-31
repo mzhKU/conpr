@@ -6,7 +6,7 @@ public class NumberRange {
 
     public void setLower(int i) {
         if (i > upper) throw new IllegalArgumentException();
-        // unluckyScheduling();
+        unluckyScheduling();
         lower = i;
     }
 
@@ -35,12 +35,12 @@ public class NumberRange {
                 r.setLower(7);
             }
         };
-
         Thread b = new Thread() {
             public void run() {
                 r.setUpper(6);
             }
         };
+
         a.start();
         b.start();
 
