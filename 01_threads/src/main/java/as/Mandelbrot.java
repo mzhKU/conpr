@@ -26,10 +26,10 @@ public class Mandelbrot {
     }
 
     public static void computeSequential(PixelPainter painter, Plane plane, CancelSupport cancel) {
-        double half = plane.length / 2;
+        double half  = plane.length / 2;
         double reMin = plane.center.r - half;
         double imMax = plane.center.i + half;
-        double step = plane.length / IMAGE_LENGTH;
+        double step  = plane.length / IMAGE_LENGTH;
 
         for (int x = 0; x < IMAGE_LENGTH && !cancel.isCancelled(); x++) { // x-axis
             double re = reMin + x * step; // map pixel to complex plane
@@ -43,8 +43,21 @@ public class Mandelbrot {
         }
     }
 
+    public static void computeParallel(PixelPainter painter, Plane plane, CancelSupport cancel, int part) {
+        double half  = plane.length / 2;
+        double reMin = plane.center.r - half;
+        double imMax = plane.center.i + half;
+        double step  = plane.length / IMAGE_LENGTH;
 
-    public static void computeParallel(PixelPainter painter, Plane plane, CancelSupport cancel) {
+        for (int x = part; x < IMAGE_LENGTH/4*part + IMAGE_LENGTH/4; x++) {
+            double re = reMin + x * step; // map pixel to complex plane
+            for (int y = 0; y < IMAGE_LENGTH; y++) { // y-axis
+                double im = imMax - y * step; // map pixel to complex plane
+                //int iterations = mandel(re, im);
+                int iterations = mandel(new Complex(re, im));
+                painter.paint(x, y, getColor(iterations));
+            }
+        }
     }
 
     /**

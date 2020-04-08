@@ -1,20 +1,7 @@
 package as;
 
-import static as.Mandelbrot.IMAGE_LENGTH;
-
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
-
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.WritableDoubleValue;
 import javafx.beans.value.WritableStringValue;
@@ -40,8 +27,16 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
+
+import static as.Mandelbrot.IMAGE_LENGTH;
+
 public class JavaFXMandelbrot extends Application {
     private static Plane INITIAL_PLANE = new Plane(new Complex(0, 0), 4);
+    private static final int N_PARTS = 4;
 
     private final Property<Plane> plane = new SimpleObjectProperty<Plane>(new Plane(new Complex(0, 0), 0)); // Dummy start value
 
@@ -201,26 +196,40 @@ public class JavaFXMandelbrot extends Application {
         return new Plane(new Complex(re, im), r.getHeight() * step);
     }
 
-    private Image drawMandel(ImageView imageView, Plane plane, WritableDoubleValue progress,
-                             ObservableBooleanValue cancelled, WritableStringValue millis) {
+    private Image drawMandel(ImageView imageView, Plane plane, WritableDoubleValue progress, ObservableBooleanValue cancelled, WritableStringValue millis) {
 
         millis.set("...");
-        WritableImage image = new WritableImage(IMAGE_LENGTH, IMAGE_LENGTH);
-        PixelPainter painter = new PixelWriterPixelPainter(image.getPixelWriter(), IMAGE_LENGTH * IMAGE_LENGTH,
-                progress);
+        WritableImage image  = new WritableImage(IMAGE_LENGTH, IMAGE_LENGTH);
+        PixelPainter painter = new PixelWriterPixelPainter(image.getPixelWriter(), IMAGE_LENGTH * IMAGE_LENGTH, progress);
 
         CancelSupport cancelSupport = new CancelSupport();
         cancelled.addListener((o, oldVal, newVal) -> cancelSupport.cancel());
 
-        Thread drawThread = new Thread(new R(painter, plane, cancelSupport));
-        drawThread.start();
+        List<Thread> threads = new ArrayList<>();
 
+        // Thread receives a runnable.
+        for(int part = 0; part < N_PARTS; part++) {
+            System.out.println("PART: " + part);
+            Thread drawThread = new Thread(new R(painter, plane, cancelSupport, part));
+            threads.add(drawThread);
+        }
+
+        // Start each thread to work on its part.
+        for (Thread dt : threads) {
+            dt.start();
+        }
+
+        // Wait for all threads to return before the image is returned.
+        for (Thread dt : threads) {
+            try { dt.join(); } catch (InterruptedException e) { }
+        }
 
         /*
         { // <<<<<<<<This block of code should run in a separate Thread >>>>>>>
             double start = System.currentTimeMillis();
             // Replace the following line with Mandelbrot.computeParallel(...)
             Mandelbrot.computeSequential(painter, plane, cancelSupport);
+            // Mandelbrot.computeParallel(painter, plane, cancelSupport);
             double end = System.currentTimeMillis();
             Platform.runLater(() -> millis.set((end - start) + "ms"));
         } // <<<<<<<<This block of code should run in a separate Thread >>>>>>>

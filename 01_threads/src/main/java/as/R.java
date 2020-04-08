@@ -10,6 +10,7 @@ class R implements Runnable {
     private PixelPainter painter;
     private CancelSupport cancelSupport;
     WritableStringValue millis;
+    private int part;
 
     public R(PixelPainter painter, Plane plane, CancelSupport cancelSupport) {
         this.plane = plane;
@@ -19,7 +20,7 @@ class R implements Runnable {
         this.millis.set("...");
     }
 
-    public R(PixelPainter painter, Plane plane, CancelSupport cancelSupport, int parts) {
+    public R(PixelPainter painter, Plane plane, CancelSupport cancelSupport, int part) {
         this.plane = plane;
         this.painter = painter;
         this.cancelSupport = cancelSupport;
@@ -32,7 +33,7 @@ class R implements Runnable {
         double start = System.currentTimeMillis();
         // Replace the following line with Mandelbrot.computeParallel(...)
         // Mandelbrot.computeSequential(painter, plane, cancelSupport);
-        Mandelbrot.computeParallel(painter, plane, cancelSupport);
+        Mandelbrot.computeParallel(painter, plane, cancelSupport, part);
         double end = System.currentTimeMillis();
         Platform.runLater(() -> millis.set((end - start) + "ms"));
     }
