@@ -1,12 +1,11 @@
 package as.conbench;
 
+import as.examples.ReaderWriterBench;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import as.conbench.runner.BarrierConprRunner;
-import as.examples.*;
 
 /**
  * This class runs multithreaded benchmarks. A benchmark is a java class which
@@ -24,7 +23,10 @@ public class ConBench {
      */
     public static void main(String[] args) throws Exception {
         // Put your benchmark classes here for easy development
-        Class<?>[] benchClasses = {CacheEffects.class};// , WriteBench.class, CacheEffects.class, CounterBench.class, MapBench.class };
+        // Class<?>[] benchClasses = {CacheEffects.class};// , WriteBench.class, CacheEffects.class, CounterBench.class, MapBench.class };
+        // Class<?>[] benchClasses = {WriteBench.class};// , WriteBench.class, CacheEffects.class, CounterBench.class, MapBench.class };
+        Class<?>[] benchClasses = {ReaderWriterBench.class};// , WriteBench.class, CacheEffects.class, CounterBench.class, MapBench.class };
+
 
         if (args.length > 0) {
             Class<?>[] classes = new Class<?>[args.length];
@@ -42,7 +44,8 @@ public class ConBench {
      * @return your {@link BenchmarkRunner}
      */
     public static BenchmarkRunner createRunner() {
-        return new BarrierConprRunner();
+        // return new BarrierConprRunner();
+        return new MyBenchmarkRunner();
     }
 
     /**

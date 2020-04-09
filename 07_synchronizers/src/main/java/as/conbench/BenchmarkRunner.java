@@ -8,5 +8,5 @@ public interface BenchmarkRunner {
      * Runs a benchmark and prints results.
      * @param desc the descriptor of the benchmark to run
      */
-    void runBenchmark(BenchmarkDescriptor desc);
+    void runBenchmark(BenchmarkDescriptor desc) throws InstantiationException, IllegalAccessException;
 }

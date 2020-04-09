@@ -49,7 +49,7 @@ public class Mandelbrot {
         double imMax = plane.center.i + half;
         double step  = plane.length / IMAGE_LENGTH;
 
-        for (int x = part; x < IMAGE_LENGTH/4*part + IMAGE_LENGTH/4; x++) {
+        for (int x = part*IMAGE_LENGTH/4; x < part*IMAGE_LENGTH/4 + IMAGE_LENGTH/4; x++) {
             double re = reMin + x * step; // map pixel to complex plane
             for (int y = 0; y < IMAGE_LENGTH; y++) { // y-axis
                 double im = imMax - y * step; // map pixel to complex plane
